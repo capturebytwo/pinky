@@ -239,17 +239,93 @@ animation:fall linear forwards;}
   pointer-events:none;
   transform:scale(1.1);
 }
+#page1 {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
 
+.bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(30px);
+  transform: scale(1.1);
+}
+
+.main {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+
+#page1{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+}
+
+/* blurred full-screen fill */
+.insta-bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+}
+
+.insta-bg img{
+  width:100%;
+  height:700px;
+  justify-content: center;
+  object-fit:cover;
+  filter:blur(15px) brightness(0.75);
+  transform:scale(1.15);
+}
+
+/* centered main image (no crop) */
+.insta-main{
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:left;
+  filter: blur(1.5px);
+  z-index:1;
+}
+
+.insta-main img{
+  max-width:100%;
+  max-height:400px;
+  object-fit:contain;
+  border-radius:20px;          /* 👈 round corners */
+  box-shadow:0 20px 45px rgba(0,0,0,0.35); /* optional, looks premium */
+}
+
+/* content above image 
 .hero{
+  position:relative;
+  z-index:2;
   display:flex;
   align-items:center;
   gap:80px;
+}*/
+.hero{
+  position:absolute;
+  inset:0;                 
+  display:flex;
+  align-items:center;     
+  justify-content:center;  
+  gap:80px;
+  z-index:2;
 }
+
 
 /* TITLE RIGHT SIDE */
 .side-title{
   font-family:cursive;
-  color:var(--red);
+  color:white;
   font-size:3rem;
   white-space:nowrap;
 }
@@ -566,7 +642,7 @@ animation:fall linear forwards;}
   position:absolute;
   inset:0;
   background:url('your-image.jpg') center/300px no-repeat; /* size same as before */
-  filter:blur(1.5px) brightness(0.7); /* 👈 blur + thoda dark */
+  filter:blur(0.25px) brightness(0.7); /* 👈 blur + thoda dark */
   z-index:0;
 }
 
@@ -586,21 +662,28 @@ animation:fall linear forwards;}
 </audio>
 
 <!-- PAGE 1 -->
-<div id="page1" class="page">
-  <div class="hero">
+<div id="page1">
+  <div class="insta-bg">
+    <img src="22.jpeg" alt="">
+  </div>
 
+  <div class="insta-main">
+    <img src="22.jpeg" alt="">
+  </div>
+
+  <div class="hero">
     <div class="stack">
       <div class="env e1"></div>
       <div class="env e2"></div>
       <div class="env e3"></div>
       <div class="env e4"></div>
-      <button class="tap-btn overlay-btn" onclick="goToPage2()">Tap 💌</button>
+      <button class="tap-btn overlay-btn" onclick="goToPage2()">To Dumbu Pawar 💌</button>
     </div>
-
-    <h1 class="side-title"><b>Something from my heart… 🤍</b></h1>
-
+    
+    <h1 class="side-title"><b>Something from my heart… ❤️</b></h1>
   </div>
 </div>
+
 
 <!-- PAGE 2 -->
 <div id="page2" class="page hidden">
