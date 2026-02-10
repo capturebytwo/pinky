@@ -199,8 +199,17 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow:hi
   text-align:left;
   line-height:1.7;
   padding-left:40px;   /* ⭐ text ko photo se door karega */
-
+  /* Constrain height and allow scrolling when text overflows */
+  max-height:320px;
+  overflow-y:auto;
+  padding-right:12px;
 }
+
+/* Preserve newlines and improve scrollbar appearance */
+#memoryText{ white-space:pre-wrap; }
+.paper-right::-webkit-scrollbar{ width:10px; }
+.paper-right::-webkit-scrollbar-thumb{ background:rgba(0,0,0,0.18); border-radius:8px; }
+.paper-right{ scrollbar-width:thin; scrollbar-color: rgba(0,0,0,0.18) transparent; }
 
 /* HEARTS */
 .heart{position:fixed;top:-20px;font-size:20px;color:#ff4d6d;
@@ -628,9 +637,11 @@ animation:fall linear forwards;}
 <!-- FINAL SURPRISE -->
 <div id="finalSurprise" style="display:none; text-align:center; flex-direction:column; align-items:center;">
   <div class="apology-box">
-  <p class="line l1"><b>I know you're feeling hurt</b></p>
-  <p class="line l2"><b>I'm really sorry.</b></p>
-  <p class="line l3"><b>I pow-mise not to do it again, so please fur-give me?</b></p>
+  <p class="line l1"><b>I know you are not sure of us and so much has changed since last time we met. </b></p>
+  <p class="line l2"><b>I don't know if you will ever get a chance to read all of this because I am scared</b></p>
+  <p class="line l3"><b>what if this makes you hate me.</b></p>
+  <p class="line l3"><b>If at all this reaches you…</b></p>
+  <p class="line l3"><b>one last chance isthava. Please?</b></p>
 </div>
 
   <button class="tap-btn" style="margin-top:20px; font-size:1.1rem;" onclick="forgiveAction()">Stay with me? ❤️
