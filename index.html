@@ -17,7 +17,7 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow-x:
 .insta-bg{ position:absolute; inset:0; z-index:-1; overflow:hidden;}
 .insta-bg img{ width:100%; height:100vh; object-fit:cover; filter:blur(10px) brightness(0.7); transform:scale(1.1);}
 
-/* --- PAGE 1: HERO --- */
+/* --- PAGE 1: HERO (Untouched) --- */
 .hero-content { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 90%; }
 .left-image img { width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
 .side-title { font-family: cursive; color: #fff; font-size: 1.8rem; text-align: center; animation: glow 1.5s infinite alternate; }
@@ -41,13 +41,45 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow-x:
 .open .paper { animation: letterRevealMobile 1.2s forwards; }
 .fade { opacity: 0; transform: scale(0.5); transition: 0.6s; }
 
-/* --- MEMORY MODAL --- */
+/* --- SPOTIFY-STYLE MEMORY CARD --- */
 #memoryView { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 100; padding: 15px; }
-.memory-paper { background: #fff8b0; width: 100%; max-height: 90vh; border-radius: 15px; display: flex; flex-direction: column; overflow: hidden; animation: paperPop 0.5s ease; }
-.paper-top { width: 100%; height: 200px; overflow: hidden; }
-.paper-top img { width: 100%; height: 100%; object-fit: cover; }
-.paper-content { padding: 20px; overflow-y: auto; font-family: cursive; font-size: 1rem; line-height: 1.6; color: #444; flex-grow: 1; }
-.back-btn { background: var(--red); color: #fff; border: none; padding: 15px; font-weight: bold; width: 100%; }
+.memory-paper { 
+    background: #fff8b0; 
+    width: 90%; 
+    max-height: 85vh; 
+    border-radius: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    overflow: hidden; 
+    animation: paperPop 0.5s ease;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+.paper-top { 
+    width: 100%; 
+    padding: 20px 20px 10px 20px; 
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+}
+.paper-top img { 
+    width: 100%; 
+    height: auto; 
+    max-height: 250px;
+    object-fit: cover; 
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+.paper-content { 
+    padding: 10px 25px 25px 25px; 
+    overflow-y: auto; 
+    font-family: cursive; 
+    font-size: 1rem; 
+    line-height: 1.6; 
+    color: #444; 
+    flex-grow: 1;
+    text-align: left;
+}
+.back-btn { background: var(--red); color: #fff; border: none; padding: 12px; font-weight: bold; width: 100%; border-radius: 0 0 15px 15px; cursor: pointer;}
 
 /* --- FINAL SURPRISE --- */
 #finalSurprise { display: none; text-align: center; }
@@ -159,6 +191,8 @@ function openMemory(num, el) {
         setTimeout(() => {
             document.getElementById("memoryImg").src = memories[num].img;
             document.getElementById("memoryView").style.display = "flex";
+            const rightArea = document.querySelector('.paper-content');
+            if(rightArea) rightArea.scrollTop = 0;
             typeWriter(memories[num].text);
             openedCount++;
         }, 600);
