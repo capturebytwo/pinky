@@ -286,40 +286,14 @@ animation:fall linear forwards;}
 
 .insta-bg img{
   width:100%;
-  height:700px;
+  height:100vh;
   justify-content: center;
   object-fit:cover;
-  filter:blur(15px) brightness(0.75);
+  filter:blur(10px) brightness(0.75);
   transform:scale(1.15);
 }
 
-/* centered main image (no crop) */
-.insta-main{
-  position:absolute;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  filter: blur(1.5px);
-  z-index:1;
-}
 
-.insta-main img{
-  max-width:100%;
-  max-height:400px;
-  object-fit:contain;
-  border-radius:20px;          /* 👈 round corners */
-  box-shadow:0 20px 45px rgba(251, 249, 249, 0.445); /* optional, looks premium */
-}
-
-/* content above image 
-.hero{
-  position:relative;
-  z-index:2;
-  display:flex;
-  align-items:center;
-  gap:80px;
-}*/
 .hero{
   position:absolute;
   inset:0;                 
@@ -459,10 +433,10 @@ animation:fall linear forwards;}
 #finalSurprise{
   position:absolute;
   inset:0;
+  height: 100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:20px;
 }
 /* ===== PAGE 1 FLOATING HEARTS BG ===== */
 .bg-heart{
@@ -677,8 +651,17 @@ animation:fall linear forwards;}
   opacity:0;
   transform:translateY(30px);
 }
+.glow-text {
+    animation: glow 1.5s ease-in-out infinite alternate;
+    color: #ff1e56;
+    text-shadow: 
+      0 0 10px whitesmoke,
+      0 0 25px var(--red),
+      0 0 40px whitesmoke;
+}
 
 /* One by one reveal */
+
 .l1{ animation:fadeLine .8s ease forwards; animation-delay:0.3s; }
 .l2{ animation:fadeLine .8s ease forwards; animation-delay:1.4s; }
 .l3{ animation:fadeLine .8s ease forwards; animation-delay:2.5s; }
@@ -726,10 +709,11 @@ animation:fall linear forwards;}
 }
 
 #finalSurprise .final-bg img{
-  width:100vw;
-  height:150vh;
+  width:90%;
+  height:160vh;
+  justify-content: center;
   object-fit:cover;
-  filter:blur(5px) brightness(0.75);
+  filter:blur(10px) brightness(0.75);
   transform:scale(1.15);
 }
 
@@ -848,22 +832,22 @@ animation:fall linear forwards;}
 <div id="finalSurprise" style="display:none; position:relative; inset:0; overflow:hidden; justify-content:center; align-items:center; flex-direction:column;">
   
   <!-- blurred background -->
-  <div class="final-bg" style="display: block;">
+  <div class="insta-bg">
     <img src="your-image.jpg" alt="final background">
   </div>
 
   <!-- main center image  checcccccccc-->
-  <div class="insta-main final-main"> 
+  <div class="final-main"> 
     <img src="your-image.jpg" alt="main memory image">
   </div>
 
   <!-- overlayed apology text -->
   <div class="apology-box">
-    <p class="line l1"><b>I know you are not sure of us and so much has changed since last time we met. </b></p>
-    <p class="line l2"><b>I don't know if you will ever get a chance to read all of this because I am scared</b></p>
-    <p class="line l3"><b>what if this makes you hate me.</b></p>
-    <p class="line l3"><b>If at all this reaches you…</b></p>
-    <p class="line l3"><b>one last chance isthava. Please?</b></p>
+    <p class="line l1 glow-text"><b>I know you are not sure of us and so much has changed since last time we met. </b></p>
+    <p class="line l2 glow-text"><b>I don't know if you will ever get a chance to read all of this because I am scared</b></p>
+    <p class="line l3 glow-text"><b>what if this makes you hate me.</b></p>
+    <p class="line l3 glow-text"><b>If at all this reaches you…</b></p>
+    <p class="line l3 glow-text"><b>one last chance isthava. Please?</b></p>
   </div>
 
   <button class="tap-btn" style="margin-top:20px; font-size:1.1rem;" onclick="forgiveAction()">Stay with me? ❤️</button>
