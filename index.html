@@ -41,7 +41,7 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow-x:
 .open .paper { animation: letterRevealMobile 1.2s forwards; }
 .fade { opacity: 0; transform: scale(0.5); transition: 0.6s; }
 
-/* --- SPOTIFY-STYLE MEMORY CARD --- */
+/* --- SPOTIFY/INSTA STYLE MEMORY CARD --- */
 #memoryView { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 100; padding: 15px; }
 .memory-paper { 
     background: #fff8b0; 
@@ -55,7 +55,6 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow-x:
     box-shadow: 0 30px 60px rgba(0,0,0,0.45);
 }
 
-/* BLURRED BACKGROUND EFFECT FOR IMAGE */
 .paper-top { 
     position: relative;
     width: 100%; 
@@ -74,15 +73,65 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow-x:
     z-index: 1;
 }
 
-.paper-top img#memoryImg { 
+.media-container {
     position: relative;
-    width: 100%; 
-    height: 100%; 
-    object-fit: contain; 
+    width: 100%;
+    height: 100%;
     z-index: 2;
-    /* Extra deep shadow like the final main image */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#memoryImg, #memoryVideo { 
+    max-width: 100%; 
+    max-height: 100%; 
+    object-fit: contain; 
     filter: drop-shadow(0 20px 45px rgba(0,0,0,0.55));
 }
+
+#memoryVideo { display: none; outline: none; }
+
+/* CAROUSEL CONTROLS */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    box-sizing: border-box;
+    z-index: 10;
+    pointer-events: none;
+}
+.nav-btn {
+    background: rgba(255, 255, 255, 0.4);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    pointer-events: auto;
+}
+.dots-container {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    z-index: 10;
+}
+.dot {
+    width: 8px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    transition: 0.3s;
+}
+.dot.active { background: white; transform: scale(1.2); }
 
 .paper-content { 
     padding: 20px 25px; 
@@ -91,32 +140,25 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow-x:
     font-size: 1.1rem; 
     line-height: 1.6; 
     color: #444; 
-    flex: 1; /* Allows it to take up remaining space and scroll */
-    -webkit-overflow-scrolling: touch; /* Smooth scroll for iOS */
+    flex: 1; 
+    -webkit-overflow-scrolling: touch;
 }
 
 .back-btn { background: var(--red); color: #fff; border: none; padding: 15px; font-weight: bold; width: 100%; cursor: pointer;}
 
-/* --- FINAL SURPRISE --- */
+/* --- FINAL SURPRISE & ANIMATIONS --- */
 #finalSurprise { display: none; text-align: center; }
 .final-main img { width: 80%; border-radius: 15px; box-shadow: 0 20px 45px rgba(0,0,0,0.35); margin-bottom: 20px; }
 .apology-box { padding: 0 20px; font-family: cursive; color: #fff; }
 .glow-text { text-shadow: 0 0 10px var(--red); font-size: 1rem; margin: 8px 0; opacity: 0; transform: translateY(10px); transition: 0.8s; }
 .show-text { opacity: 1; transform: translateY(0); }
 
-/* --- ANIMATIONS --- */
-@keyframes letterRevealMobile {
-  0% { transform: translateY(20px) scale(0.8); opacity: 0; }
-  100% { transform: translateY(-40px) scale(1.1); opacity: 1; }
-}
+@keyframes letterRevealMobile { 0% { transform: translateY(20px) scale(0.8); opacity: 0; } 100% { transform: translateY(-40px) scale(1.1); opacity: 1; } }
 @keyframes paperPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes floatStack { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 @keyframes glow { from { text-shadow: 0 0 5px var(--red); } to { text-shadow: 0 0 20px var(--red); } }
-
-/* --- HEARTS --- */
 .heart { position: fixed; top: -20px; font-size: 20px; animation: fall linear forwards; z-index: 99; }
 @keyframes fall { to { transform: translateY(110vh); opacity: 0; } }
-
 .fly { animation: flyIn 1s ease forwards; opacity: 0; }
 @keyframes flyIn { from { transform: translateY(100px) rotate(10deg); opacity: 0; } to { transform: translateY(0) rotate(0); opacity: 1; } }
 </style>
@@ -159,7 +201,17 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow-x:
 <div id="memoryView">
     <div class="memory-paper">
         <div class="paper-top">
-            <img id="memoryBlurBg" src=""> <img id="memoryImg" src=""> </div>
+            <img id="memoryBlurBg" src="">
+            <div class="media-container">
+                <img id="memoryImg" src="">
+                <video id="memoryVideo" controls playsinline></video>
+            </div>
+            <div class="carousel-nav" id="carouselNav">
+                <button class="nav-btn" onclick="changeImage(-1)">❮</button>
+                <button class="nav-btn" onclick="changeImage(1)">❯</button>
+            </div>
+            <div class="dots-container" id="dotsContainer"></div>
+        </div>
         <div class="paper-content">
             <div id="memoryText"></div>
         </div>
@@ -168,8 +220,8 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow-x:
 </div>
 
 <div id="finalSurprise" class="page">
-    <div class="insta-bg"><img src="22.jpeg"></div>
-    <div class="final-main"><img src="22.jpeg"></div>
+    <div class="insta-bg"><img src="your-image.jpg"></div>
+    <div class="final-main"><img src="your-image.jpg"></div>
     <div class="apology-box" id="apologyBox">
         <p class="glow-text">I know things have changed...</p>
         <p class="glow-text">I don't know if you'll read this because I'm scared.</p>
@@ -187,16 +239,20 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow-x:
 <script>
 const memories = {
     1:{img:"1.jpeg",text:"It is YOU. It has always been YOU and It will be just YOU. I am a different person infront of different people. I express something infront of some and hide it from others and I try to act all strong. But it iss only infront you, I can be the all versions of me. I can behave the way I am with my friends, I can make fun of you like I do with my siblings, I can “alagadam”(english lo marchipoya) like I do infront of my parents, I enjoy your company like I am with my cousins and I can be a kid as you treat me and everyything. Not even once I tried to hide myself from what I was feeling. I felt the most secured when I am with you, I don’t even know how I slept on your shoulder in our college ground when I am can’t even sleep on a sofa. That is how much I trust you, how safe I feel when I am with you. I happily crossed all my boundaries only for you. Even in these 2 years, I tried to move on honestly but I don’t know, I couldn’t, then I realised I can’t. Okati adigav, asalu vere vallani pelli cheskogalava ani..enduku cheskovali, anyways the answer is NO, na valla kaadhu, the thought of not having you in my life is not letting me sleep, eat, concentrate or do anything. All I do everyday every minute from the past 5 months since you started ignoring me is think about you. Finally birthday ki matladinappudu, hammaya, na dumbu na daggare unnadu pakkane untadu le anukunnanu, anduke 1st night prashantham ga padukunna, nee call miss ayya, lekapothe everyday I check the volume, notifications anni hoping you would call me. I was not sure if I can stand against my family or hurt them, kani gradually things will change, they will definitely like you ani. Naa mundhu jaruguthunna every situation, manaki kuda pelli ayipothe ilane veltham kada, ilane chestham kada..everything is You."
-    },
-    2:{img:"2.jpeg",text:"Chandan, it's been 6 whole years since you entered into my life with a smile. I cannot thank you enough for all these years of love. Be it as a friend or my love, you’ve stayed with me all throughout. There were times we fought, we cried, we gave up on each other. But I never wanted to leave you. Even when I said break up, I was confused because I was staying at home and everything was new. All I wanted was for you to reassure me (you know I always create scenarios in my head) and give me strength to overcome them or a short break. But this created a gap of 1 and half years. Even during these times, I never stopped loving you, maybe the way I loved changed. Sometimes it was anger, why would you not ask me to come back, was I that easy to give up or was I not enough, what was all that happened between us, or did I not love you that much, was it suffocating, was it that difficult to realise I exist, do you not remember me, or did it not mean anything to you, sometimes it was that feeling where I even loved missing you, I felt happy that you exist and we happened and you will somehow find your way back just like you used to come to me after every fight (like I used to go home and you would come to the station to drop me) and randomly hug myself, sometimes it was fear, what if you not come back, what if I get married to someone else, what was all that happened, why did it happen if it was not meant to be. Through all this, I only realised how much you loved me. You stayed with patience throughout my anger and sorrow, you stood by me when I cried my heart out and never judged me. Me crying infront of you non-stop about my friends, parents and you is all very personal to me. You changed the way I think, I believe and I see things. I felt the safest around you, that I could even tell you something that I have been holding onto myself my entire life. I love how you treated me like a kid. I loved myself everytime I got excited to see you, hug you, talk to you, go out with you. I used to feel happy just looking at you. I wish I could express myself properly, I wish you could know everything that I felt when I was with you and everything I am feeling right now. I love you so much."
-    },
-    3:{img:"3.jpeg",text:"Not just one but memories. You asked me if I still have the gifts that you gave me. I even have the tag of sweatshirt you first gifted me. The handwritten notes, the flower, the attitude dumbu, Bubble machine, sponge smiley keychain, black hoodie, phone case, camera, red cute doll, everyyythingggg. 1st time you took me on your bike to kovalam beach, 1st time you held my hand, the night I confessed how jealous I was, everything flashes in front my eyes just like it happened a little time ago, only to realise it has been 4 years. Beyond all these, the experiences that you gave me, the love that you showed, the care you showered, all the hugs and kisses, everything is still with me and will always be with me."
-    },
-      4:{img:"4.jpeg",text:"Whatever it is, I am still waiting for you, hoping and praying for god to bring us back, to change your heart to love me again. I believe we did happen for a reason. Else, there’s no other reason that explains why I left everyone just to watch a stranger’s badminton match and why would a stranger hug me in front of everyone before his match, why would I spend entire night exploring a random unknown station with you, why would we stop talking and what made you to call me ask me to come down on march 5th, 2022. Even after a year gap, why would we still have the same bond and how did that lead us to a relationship? What is that assurance that made me wait for 2 whole years thinking yes, you are still there, and we will definitely get back. Chandan I know we will get back, but my heart still aches when I think of you, knowing that you are not beside me right now and I am the reason for that. Why did u nott fight back when I said I wanted to leave you, you promised me that you would stay beside me no matter what. I was tired of acting strong dumbu, was tired of waiting for your reply, tired of waiting to know you are safe and reached home. I did not want to loose you. Tarwata eppudu matladudham anukunna kuda, I thought maybe you forgot me and were happy leading your life without any restrictions I put before you. I thought I was disturbing you, maybe I was a distraction while you were preparing for cat and interviews. I know I loved you for who you are but I just wanted you to be careful and responsible. One thing..I never hated you playing badminton or cricket or doing photography. In fact I love to see you score runs, smash the cock and aa aggresiveness and people cheering for you. I used to feel soooo proud of my cutest dumbu. I just wanted you to manage them properly while giving me some time. Photography chesthunnappudu kuda chala baguntav. I love seeing you happy, your eyes glow differently when you take a picture that satisfies you. Nuv eyes tho matladadam ishtam. Cheppalante neeku malli padipoindhi kuda badminton match choose, inter iim matches lo. Avi choosi malli fix ayipoya wait cheyyadam valla ayye panila ledhu, maname rangam loki digali anii. I can love you whoooole life, ayina inka prema migilipothundhi antha ishtam nuvvante. Okasari pelli cheskuntava ani adagochu kada. Somewhat filmy but I even thought you would somehow convince my parents and surprise me by coming to our home and I would cry falling into your arms and hug you in front of my family."
-    }
-};
+},
+2:{img:"3.jpeg",text:"Chandan, it's been 6 whole years since you entered into my life with a smile. I cannot thank you enough for all these years of love. Be it as a friend or my love, you’ve stayed with me all throughout. There were times we fought, we cried, we gave up on each other. But I never wanted to leave you. Even when I said break up, I was confused because I was staying at home and everything was new. All I wanted was for you to reassure me (you know I always create scenarios in my head) and give me strength to overcome them or a short break. But this created a gap of 1 and half years. Even during these times, I never stopped loving you, maybe the way I loved changed. Sometimes it was anger, why would you not ask me to come back, was I that easy to give up or was I not enough, what was all that happened between us, or did I not love you that much, was it suffocating, was it that difficult to realise I exist, do you not remember me, or did it not mean anything to you, sometimes it was that feeling where I even loved missing you, I felt happy that you exist and we happened and you will somehow find your way back just like you used to come to me after every fight (like I used to go home and you would come to the station to drop me) and randomly hug myself, sometimes it was fear, what if you not come back, what if I get married to someone else, what was all that happened, why did it happen if it was not meant to be. Through all this, I only realised how much you loved me. You stayed with patience throughout my anger and sorrow, you stood by me when I cried my heart out and never judged me. Me crying infront of you non-stop about my friends, parents and you is all very personal to me. You changed the way I think, I believe and I see things. I felt the safest around you, that I could even tell you something that I have been holding onto myself my entire life. I love how you treated me like a kid. I loved myself everytime I got excited to see you, hug you, talk to you, go out with you. I used to feel happy just looking at you. I wish I could express myself properly, I wish you could know everything that I felt when I was with you and everything I am feeling right now. I love you so much."
+},
+3: { 
+        img: ["memory/a.jpeg", "memory/b.jpeg", "memory/c.jpeg","memory/d.jpeg","memory/e.jpeg","memory/f.jpeg","memory/g.jpeg","memory/h.jpeg","memory/i.jpeg","memory/j.jpeg","memory/k.jpeg","memory/l.jpeg","memory/m.jpeg","memory/n.jpeg","memory/o.jpeg","memory/p.mp4"], // Add your multiple images here
+        text: "Not just one but memories. You asked me if I still have the gifts that you gave me. I even have the tag of sweatshirt you first gifted me. The handwritten notes, the flower, the attitude dumbu, Bubble machine, sponge smiley keychain, black hoodie, phone case, camera, red cute doll, everyyythingggg. 1st time you took me on your bike to kovalam beach, 1st time you held my hand, the night I confessed how jealous I was, everything flashes in front my eyes just like it happened a little time ago, only to realise it has been 4 years. Beyond all these, the experiences that you gave me, the love that you showed, the care you showered, all the hugs and kisses, everything is still with me and will always be with me."
+},
+    4: { img: "4.jpeg", text: "Whatever it is, I am still waiting for you, hoping and praying for god to bring us back, to change your heart to love me again. I believe we did happen for a reason. Else, there’s no other reason that explains why I left everyone just to watch a stranger’s badminton match and why would a stranger hug me in front of everyone before his match, why would I spend entire night exploring a random unknown station with you, why would we stop talking and what made you to call me ask me to come down on march 5th, 2022. Even after a year gap, why would we still have the same bond and how did that lead us to a relationship? What is that assurance that made me wait for 2 whole years thinking yes, you are still there, and we will definitely get back. Chandan I know we will get back, but my heart still aches when I think of you, knowing that you are not beside me right now and I am the reason for that. Why did u nott fight back when I said I wanted to leave you, you promised me that you would stay beside me no matter what. I was tired of acting strong dumbu, was tired of waiting for your reply, tired of waiting to know you are safe and reached home. I did not want to loose you. Tarwata eppudu matladudham anukunna kuda, I thought maybe you forgot me and were happy leading your life without any restrictions I put before you. I thought I was disturbing you, maybe I was a distraction while you were preparing for cat and interviews. I know I loved you for who you are but I just wanted you to be careful and responsible. One thing..I never hated you playing badminton or cricket or doing photography. In fact I love to see you score runs, smash the cock and aa aggresiveness and people cheering for you. I used to feel soooo proud of my cutest dumbu. I just wanted you to manage them properly while giving me some time. Photography chesthunnappudu kuda chala baguntav. I love seeing you happy, your eyes glow differently when you take a picture that satisfies you. Nuv eyes tho matladadam ishtam. Cheppalante neeku malli padipoindhi kuda badminton match choose, inter iim matches lo. Avi choosi malli fix ayipoya wait cheyyadam valla ayye panila ledhu, maname rangam loki digali anii. I can love you whoooole life, ayina inka prema migilipothundhi antha ishtam nuvvante. Okasari pelli cheskuntava ani adagochu kada. Somewhat filmy but I even thought you would somehow convince my parents and surprise me by coming to our home and I would cry falling into your arms and hug you in front of my family."
+}};
+
 let openedCount = 0;
 let typingTimer = null;
+let currentImgIndex = 0;
+let currentMemoryImages = [];
 
 function goToPage2() {
     document.getElementById("bgMusic").play();
@@ -210,21 +266,68 @@ function openMemory(num, el) {
     setTimeout(() => {
         el.classList.add("fade");
         setTimeout(() => {
-            const imgPath = memories[num].img;
-            document.getElementById("memoryImg").src = imgPath;
-            document.getElementById("memoryBlurBg").src = imgPath;
+            const mem = memories[num];
+            currentImgIndex = 0;
+            currentMemoryImages = Array.isArray(mem.img) ? mem.img : [mem.img];
+
+            document.getElementById('carouselNav').style.display = currentMemoryImages.length > 1 ? 'flex' : 'none';
+            setupDots();
+            displayMedia(currentMemoryImages[0]);
+
             document.getElementById("memoryView").style.display = "flex";
-            
-            // Reset scroll to top
             document.querySelector('.paper-content').scrollTop = 0;
-            
-            typeWriter(memories[num].text);
+            typeWriter(mem.text);
             openedCount++;
         }, 600);
     }, 1000);
 }
 
+function displayMedia(path) {
+    const imgTag = document.getElementById("memoryImg");
+    const videoTag = document.getElementById("memoryVideo");
+    const blurTag = document.getElementById("memoryBlurBg");
+
+    // Pause any playing video first
+    videoTag.pause();
+
+    if (path.toLowerCase().endsWith('.mp4')) {
+        imgTag.style.display = "none";
+        videoTag.style.display = "block";
+        videoTag.src = path;
+        blurTag.src = ""; // Blur doesn't work well for video, can use a thumbnail here if you have one
+    } else {
+        videoTag.style.display = "none";
+        imgTag.style.display = "block";
+        imgTag.src = path;
+        blurTag.src = path;
+    }
+}
+
+function changeImage(step) {
+    currentImgIndex = (currentImgIndex + step + currentMemoryImages.length) % currentMemoryImages.length;
+    displayMedia(currentMemoryImages[currentImgIndex]);
+    updateDots();
+}
+
+function setupDots() {
+    const dotsCont = document.getElementById('dotsContainer');
+    dotsCont.innerHTML = '';
+    if(currentMemoryImages.length > 1) {
+        currentMemoryImages.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dotsCont.appendChild(dot);
+        });
+    }
+}
+
+function updateDots() {
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((d, i) => d.classList.toggle('active', i === currentImgIndex));
+}
+
 function closeMemory() {
+    document.getElementById("memoryVideo").pause();
     document.getElementById("memoryView").style.display = "none";
     if(typingTimer) clearTimeout(typingTimer);
     if(openedCount === 4) {
@@ -254,8 +357,7 @@ function typeWriter(text) {
 function startHearts() {
     setInterval(() => {
         const h = document.createElement("div");
-        h.className = "heart";
-        h.innerHTML = "❤️";
+        h.className = "heart"; h.innerHTML = "❤️";
         h.style.left = Math.random() * 100 + "vw";
         h.style.animationDuration = (Math.random() * 2 + 3) + "s";
         document.body.appendChild(h);
