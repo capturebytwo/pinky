@@ -179,14 +179,23 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow:hi
 
 .paper-left{
   width:38%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
 .paper-left img{
-  width:120%;
-  height:320px;      /* fixed height */
-  object-fit:cover;  /* crop clean */
-  border-radius:10px;
+  max-width:100%;
+  max-height:320px;
+  object-fit:contain;
+
+  border-radius:18px;
+  box-shadow:0 20px 45px rgba(0,0,0,0.35);
+
+  background:rgba(255,255,255,0.6);
+  padding:1px;
 }
+
 
 .paper-right{
   width:65%;
@@ -290,7 +299,7 @@ animation:fall linear forwards;}
   inset:0;
   display:flex;
   justify-content:center;
-  align-items:left;
+  align-items:center;
   filter: blur(1.5px);
   z-index:1;
 }
@@ -300,7 +309,7 @@ animation:fall linear forwards;}
   max-height:400px;
   object-fit:contain;
   border-radius:20px;          /* 👈 round corners */
-  box-shadow:0 20px 45px rgba(0,0,0,0.35); /* optional, looks premium */
+  box-shadow:0 20px 45px rgba(251, 249, 249, 0.445); /* optional, looks premium */
 }
 
 /* content above image 
@@ -319,6 +328,73 @@ animation:fall linear forwards;}
   justify-content:center;  
   gap:80px;
   z-index:2;
+}
+/* ===== PAGE 1 NEW LAYOUT ===== */
+
+.page1-layout{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:80px;
+  z-index:2;
+}
+
+/* LEFT IMAGE */
+.left-image{
+  width:40%;
+  display:flex;
+  justify-content:center;
+}
+
+.left-image img{
+  max-width:100%;
+  max-height:420px;
+  object-fit:contain;
+  border-radius:20px;
+  box-shadow:0 20px 45px rgba(0,0,0,0.35);
+}
+
+/* RIGHT CONTENT */
+.right-content{
+  width:45%;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:30px;
+}
+
+/* title alignment */
+.right-content .side-title{
+  font-size:3rem;
+  text-align:left;
+   transform: translateX(-13%);
+}
+
+/* envelopes below text */
+.right-content .stack{
+  margin-top:10px;
+}
+
+/* mobile */
+@media(max-width:768px){
+  .page1-layout{
+    flex-direction:column;
+    gap:40px;
+  }
+
+  .left-image,
+  .right-content{
+    width:90%;
+    align-items:center;
+    text-align:center;
+  }
+
+  .right-content .side-title{
+    text-align:center;
+    font-size:2.2rem;
+  }
 }
 
 
@@ -626,31 +702,66 @@ animation:fall linear forwards;}
   }
 }
 #finalSurprise{
-  position:absolute;
+  position:relative;
   inset:0;
   display:flex;
   justify-content:center;
   align-items:center;
   flex-direction:column;
-  gap:1px;
   overflow:hidden; /* important */
 }
 
-/* BLUR BACKGROUND IMAGE */
-#finalSurprise::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:url('your-image.jpg') center/300px no-repeat; /* size same as before */
-  filter:blur(0.25px) brightness(0.7); /* 👈 blur + thoda dark */
-  z-index:0;
-}
 
 /* content upar dikhe */
 .apology-box,
 #finalSurprise button{
   position:relative;
   z-index:1;
+}
+/* Final surprise background (blur like Page 1) */
+#finalSurprise .final-bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+}
+
+#finalSurprise .final-bg img{
+  width:100vw;
+  height:150vh;
+  object-fit:cover;
+  filter:blur(5px) brightness(0.75);
+  transform:scale(1.15);
+}
+
+/* Center main image */
+#finalSurprise .final-main{
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:0;
+}
+
+#finalSurprise .final-main img{
+  max-width:80%;
+  max-height:400px;
+  object-fit:contain;
+  border-radius:20px;
+  box-shadow:0 20px 45px rgba(0,0,0,0.35);
+  transition:transform 0.5s ease;
+}
+
+/* optional gentle float effect */
+#finalSurprise .final-main img{
+  animation:floatPoster 3s ease-in-out infinite;
+}
+
+/* Apology text on top */
+#finalSurprise .apology-box,
+#finalSurprise button{
+  position:relative;
+  z-index:2;
 }
 
 </style>
@@ -661,27 +772,38 @@ animation:fall linear forwards;}
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
+
+
 <!-- PAGE 1 -->
 <div id="page1">
   <div class="insta-bg">
     <img src="22.jpeg" alt="">
   </div>
 
-  <div class="insta-main">
+  <div class="hero page1-layout">
+
+  <!-- LEFT : IMAGE -->
+  <div class="left-image">
     <img src="22.jpeg" alt="">
   </div>
 
-  <div class="hero">
+  <!-- RIGHT : TEXT + ENVELOPES -->
+  <div class="right-content">
+    <h1 class="side-title"><b>Something from my heart… ❤️</b></h1>
+
     <div class="stack">
       <div class="env e1"></div>
       <div class="env e2"></div>
       <div class="env e3"></div>
       <div class="env e4"></div>
-      <button class="tap-btn overlay-btn" onclick="goToPage2()">To Dumbu Pawar 💌</button>
+      <button class="tap-btn overlay-btn" onclick="goToPage2()">
+        💌 To, <br> Dumbu Pawar
+      </button>
     </div>
-    
-    <h1 class="side-title"><b>Something from my heart… ❤️</b></h1>
   </div>
+
+    </div> <!-- right-content -->
+  </div>   <!-- hero page1-layout -->
 </div>
 
 
@@ -721,19 +843,32 @@ animation:fall linear forwards;}
 
   </div>
 </div>
+
 <!-- FINAL SURPRISE -->
-<div id="finalSurprise" style="display:none; text-align:center; flex-direction:column; align-items:center;">
+<div id="finalSurprise" style="display:none; position:relative; inset:0; overflow:hidden; justify-content:center; align-items:center; flex-direction:column;">
+  
+  <!-- blurred background -->
+  <div class="final-bg" style="display: block;">
+    <img src="your-image.jpg" alt="final background">
+  </div>
+
+  <!-- main center image  checcccccccc-->
+  <div class="insta-main final-main"> 
+    <img src="your-image.jpg" alt="main memory image">
+  </div>
+
+  <!-- overlayed apology text -->
   <div class="apology-box">
-  <p class="line l1"><b>I know you are not sure of us and so much has changed since last time we met. </b></p>
-  <p class="line l2"><b>I don't know if you will ever get a chance to read all of this because I am scared</b></p>
-  <p class="line l3"><b>what if this makes you hate me.</b></p>
-  <p class="line l3"><b>If at all this reaches you…</b></p>
-  <p class="line l3"><b>one last chance isthava. Please?</b></p>
+    <p class="line l1"><b>I know you are not sure of us and so much has changed since last time we met. </b></p>
+    <p class="line l2"><b>I don't know if you will ever get a chance to read all of this because I am scared</b></p>
+    <p class="line l3"><b>what if this makes you hate me.</b></p>
+    <p class="line l3"><b>If at all this reaches you…</b></p>
+    <p class="line l3"><b>one last chance isthava. Please?</b></p>
+  </div>
+
+  <button class="tap-btn" style="margin-top:20px; font-size:1.1rem;" onclick="forgiveAction()">Stay with me? ❤️</button>
 </div>
 
-  <button class="tap-btn" style="margin-top:20px; font-size:1.1rem;" onclick="forgiveAction()">Stay with me? ❤️
-</button>
-</div>
 <!-- I LOVE YOU POSTER -->
 <div id="lovePosterScreen" style="display:none;">
   <div class="love-poster">
