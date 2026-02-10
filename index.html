@@ -199,8 +199,17 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow:hi
   text-align:left;
   line-height:1.7;
   padding-left:40px;   /* ⭐ text ko photo se door karega */
-
+  /* Constrain height and allow scrolling when text overflows */
+  max-height:320px;
+  overflow-y:auto;
+  padding-right:12px;
 }
+
+/* Preserve newlines and improve scrollbar appearance */
+#memoryText{ white-space:pre-wrap; }
+.paper-right::-webkit-scrollbar{ width:10px; }
+.paper-right::-webkit-scrollbar-thumb{ background:rgba(0,0,0,0.18); border-radius:8px; }
+.paper-right{ scrollbar-width:thin; scrollbar-color: rgba(0,0,0,0.18) transparent; }
 
 /* HEARTS */
 .heart{position:fixed;top:-20px;font-size:20px;color:#ff4d6d;
@@ -628,9 +637,11 @@ animation:fall linear forwards;}
 <!-- FINAL SURPRISE -->
 <div id="finalSurprise" style="display:none; text-align:center; flex-direction:column; align-items:center;">
   <div class="apology-box">
-  <p class="line l1"><b>I know you're feeling hurt</b></p>
-  <p class="line l2"><b>I'm really sorry.</b></p>
-  <p class="line l3"><b>I pow-mise not to do it again, so please fur-give me?</b></p>
+  <p class="line l1"><b>I know you are not sure of us and so much has changed since last time we met. </b></p>
+  <p class="line l2"><b>I don't know if you will ever get a chance to read all of this because I am scared</b></p>
+  <p class="line l3"><b>what if this makes you hate me.</b></p>
+  <p class="line l3"><b>If at all this reaches you…</b></p>
+  <p class="line l3"><b>one last chance isthava. Please?</b></p>
 </div>
 
   <button class="tap-btn" style="margin-top:20px; font-size:1.1rem;" onclick="forgiveAction()">Stay with me? ❤️
@@ -660,6 +671,9 @@ let page2HeartInterval;
 
   let openedCount = 0;
 let openedSet = new Set();
+
+  // typing timer for the typeWriter so we can cancel ongoing typing
+  let typingTimer = null;
 
 const memories={
 1:{img:"first.png",text:"It is YOU. It has always been YOU and It will be just YOU. I am a different person infront of different people. I express something infront of some and hide it from others and I try to act all strong. But it iss only infront you, I can be the all versions of me. I can behave the way I am with my friends, I can make fun of you like I do with my siblings, I can “alagadam”(english lo marchipoya) like I do infront of my parents, I enjoy your company like I am with my cousins and I can be a kid as you treat me and everyything. Not even once I tried to hide myself from what I was feeling. I felt the most secured when I am with you, I don’t even know how I slept on your shoulder in our college ground when I am can’t even sleep on a sofa. That is how much I trust you, how safe I feel when I am with you. I happily crossed all my boundaries only for you. Even in these 2 years, I tried to move on honestly but I don’t know, I couldn’t, then I realised I can’t. Okati adigav, asalu vere vallani pelli cheskogalava ani..enduku cheskovali, anyways the answer is NO, na valla kaadhu, the thought of not having you in my life is not letting me sleep, eat, concentrate or do anything. All I do everyday every minute from the past 5 months since you started ignoring me is think about you. Finally birthday ki matladinappudu, hammaya, na dumbu na daggare unnadu pakkane untadu le anukunnanu, anduke 1st night prashantham ga padukunna, nee call miss ayya, lekapothe everyday I check the volume, notifications anni hoping you would call me. I was not sure if I can stand against my family or hurt them, kani gradually things will change, they will definitely like you ani. Naa mundhu jaruguthunna every situation, manaki kuda pelli ayipothe ilane veltham kada, ilane chestham kada..everything is You."
@@ -750,6 +764,8 @@ function stopBGHearts(){
 function closeMemory(){
   memoryView.style.display="none";
   stopHearts();
+  // stop any ongoing typing to avoid interleaved/gibberish text
+  if(typingTimer) clearTimeout(typingTimer);
   if(openedCount === 4){
     showFinalSurprise();
   }
@@ -780,6 +796,8 @@ function forgiveAction(){
   },600);
 }
 function typeWriter(text){
+  // cancel any previous typing in progress
+  if(typingTimer) clearTimeout(typingTimer);
   memoryText.innerHTML = "";
   let i = 0;
   const speed = 40; // typing speed
@@ -787,7 +805,7 @@ function typeWriter(text){
     if(i < text.length){
       memoryText.innerHTML += text.charAt(i);
       i++;
-      setTimeout(type, speed);
+      typingTimer = setTimeout(type, speed);
     }
   }
   type();
