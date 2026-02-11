@@ -76,7 +76,10 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow-x:
     overflow: hidden;
     background: #000;
 }
-
+#memoryText {
+    display: block;
+    white-space: pre-wrap; /* Keeps your line breaks correct */
+}
 #memoryBlurBg {
     position: absolute;
     inset: -10%;
@@ -156,6 +159,9 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow-x:
     color: #444; 
     flex: 1; 
     -webkit-overflow-scrolling: touch;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    font-variant-ligatures: none;
 }
 
 .back-btn { background: var(--red); color: #fff; border: none; padding: 15px; font-weight: bold; width: 100%; cursor: pointer;}
@@ -372,21 +378,34 @@ function closeMemory() {
 }
 
 function typeWriter(text) {
+    // 1. Clear any old timers to prevent letter jumbling
+    if (typingTimer) {
+        clearTimeout(typingTimer);
+        typingTimer = null;
+    }
+
     const el = document.getElementById("memoryText");
-    const container = document.querySelector('.paper-content'); // The scrollable box
-    el.innerHTML = "";
-    let i = 0;
+    // MATCHING YOUR HTML: using .paper-content
+    const container = document.querySelector('.paper-content'); 
     
+    el.innerHTML = ""; 
+    let i = 0;
+
     function type() {
         if (i < text.length) {
+            // Use appendChild or simple += 
             el.innerHTML += text.charAt(i);
             i++;
-            
-            // AUTO-SCROLL LOGIC:
-            // Keeps the scroll position at the bottom as new lines appear
-            container.scrollTop = container.scrollHeight;
-            
+
+            // 2. The Auto-Scroll Fix
+            if (container) {
+                // Using a slight delay or requestAnimationFrame makes iOS scroll smoother
+                container.scrollTop = container.scrollHeight;
+            }
+
             typingTimer = setTimeout(type, 30);
+        } else {
+            typingTimer = null;
         }
     }
     type();
