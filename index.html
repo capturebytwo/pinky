@@ -1,9 +1,15 @@
+<script type="text/javascript">
+  // Check screen width or user agent
+  if (window.innerWidth <= 768 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    window.location.href = "indexkkk.html";
+  }
+</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Letters For You ❤️</title>
+<title>Letters For Yous ❤️</title>
 
 <style>
 :root{--red:#ff4d6d;--bg:#ffe3e8;}
@@ -146,14 +152,14 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow:hi
 #memoryView{
   position:fixed;inset:0;display:none;justify-content:center;
   align-items:center;text-align:center;padding:20px;
-  background-size:cover;background-position:center;color:#fff;
+  background:rgba(0,0,0,0.4);
 }
 .memory-box{
   background:rgba(0,0,0,0.6);padding:25px;border-radius:10px;
   max-width:400px;
 }
 .back-btn{
-  margin-top:350px;padding:8px 20px;border:none;border-radius:20px;
+  margin-top:15px;padding:8px 20px;border:none;border-radius:20px;
   background:var(--red);color:#fff;cursor:pointer;
 }
 
@@ -161,15 +167,16 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow:hi
 .memory-paper{
   position:relative;
   background:#fff8b0;
-  width:850px;          /* pehle 600 tha */
+  width:850px;
   max-width:95%;
-  min-height:380px;     /* height bhi badhai */
+  min-height:380px;
   border-radius:12px;
   box-shadow:0 30px 60px rgba(0,0,0,0.35);
   display:flex;
-  padding:30px;         /* andar ka space zyada */
+  padding:30px;
   gap:30px;
   animation:paperPop .5s ease;
+  overflow:hidden; /* Needed to contain the full background blur */
 }
 
 @keyframes paperPop{
@@ -177,32 +184,53 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow:hi
   to{transform:scale(1) rotate(0);opacity:1;}
 }
 
-.paper-left{
-  width:38%;
+/* FULL CARD BLUR ELEMENT */
+#memoryBlurBg { 
+    position: absolute; 
+    inset: -10%; 
+    width: 120%; 
+    height: 120%; 
+    object-fit: cover; 
+    filter: blur(20px) brightness(1.1) opacity(0.85); 
+    z-index: 0;
 }
 
-.paper-left img{
-  width:120%;
-  height:320px;      /* fixed height */
-  object-fit:cover;  /* crop clean */
-  border-radius:10px;
+.paper-left{
+  width:38%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  z-index:1; /* Above blur */
+}
+
+.paper-left img, .paper-left video{
+  max-width:100%;
+  max-height:320px;
+  object-fit:contain;
+  border-radius:18px;
+  box-shadow:0 20px 45px rgba(0,0,0,0.35);
+  background:rgba(255,255,255,0.3);
+  padding:1px;
 }
 
 .paper-right{
   width:65%;
   display:flex;
+  flex-direction:column;
   align-items:flex-start;
   justify-content:flex-start;
   font-family:cursive;
   font-size:1.1rem;
-  color:#444;
+  color:#222; /* Darker for better contrast on bright blur */
   text-align:left;
   line-height:1.7;
-  padding-left:40px;   /* ⭐ text ko photo se door karega */
-  /* Constrain height and allow scrolling when text overflows */
+  padding-left:40px;
   max-height:320px;
   overflow-y:auto;
   padding-right:12px;
+  position:relative;
+  z-index:1; /* Above blur */
 }
 
 /* Preserve newlines and improve scrollbar appearance */
@@ -239,17 +267,124 @@ animation:fall linear forwards;}
   pointer-events:none;
   transform:scale(1.1);
 }
+#page1 {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+.bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(30px);
+  transform: scale(1.1);
+}
+
+.main {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* blurred full-screen fill */
+.insta-bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+}
+
+.insta-bg img{
+  width:100%;
+  height:100vh;
+  justify-content: center;
+  object-fit:cover;
+  filter:blur(10px) brightness(0.75);
+  transform:scale(1.15);
+}
 
 .hero{
+  position:absolute;
+  inset:0;                  
+  display:flex;
+  align-items:center;      
+  justify-content:center;  
+  gap:80px;
+  z-index:2;
+}
+
+.page1-layout{
+  position:absolute;
+  inset:0;
   display:flex;
   align-items:center;
+  justify-content:center;
   gap:80px;
+  z-index:2;
+}
+
+/* LEFT IMAGE */
+.left-image{
+  width:40%;
+  display:flex;
+  justify-content:center;
+}
+
+.left-image img{
+  max-width:100%;
+  max-height:420px;
+  object-fit:contain;
+  border-radius:20px;
+  box-shadow:0 20px 45px rgba(0,0,0,0.35);
+}
+
+/* RIGHT CONTENT */
+.right-content{
+  width:45%;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:30px;
+}
+
+/* title alignment */
+.right-content .side-title{
+  font-size:3rem;
+  text-align:left;
+   transform: translateX(-13%);
+}
+
+/* envelopes below text */
+.right-content .stack{
+  margin-top:10px;
+}
+
+/* mobile */
+@media(max-width:768px){
+  .page1-layout{
+    flex-direction:column;
+    gap:40px;
+  }
+
+  .left-image,
+  .right-content{
+    width:90%;
+    align-items:center;
+    text-align:center;
+  }
+
+  .right-content .side-title{
+    text-align:center;
+    font-size:2.2rem;
+  }
 }
 
 /* TITLE RIGHT SIDE */
 .side-title{
   font-family:cursive;
-  color:var(--red);
+  color:white;
   font-size:3rem;
   white-space:nowrap;
 }
@@ -295,24 +430,15 @@ animation:fall linear forwards;}
   font-size:1rem;
 }
 
-@media(max-width:768px){
-  .hero{
-    flex-direction:column;
-    gap:30px;
-  }
-  .side-title{
-    font-size:2rem;
-  }
-}
 #finalSurprise{
   position:absolute;
   inset:0;
+  height: 100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:20px;
 }
-/* ===== PAGE 1 FLOATING HEARTS BG ===== */
+
 .bg-heart{
   position:fixed;
   bottom:-20px;
@@ -383,6 +509,7 @@ animation:fall linear forwards;}
     opacity:0;
   }
 }
+
 /* ===== ENVELOPE HOVER FLOAT EFFECT ===== */
 .envelope{
   transition:transform 0.4s ease, box-shadow 0.4s ease;
@@ -414,7 +541,7 @@ animation:fall linear forwards;}
 }
 
 @keyframes fly3{
-  from{transform:translate(-400px,300px) scale(0.5) rotate(-20deg);opacity:0;}
+  from{transform:translate(-400px,300px) scale(0.5) rotate(20deg);opacity:0;}
   to{transform:translate(0,0) scale(1) rotate(0);opacity:1;}
 }
 
@@ -434,21 +561,6 @@ animation:fall linear forwards;}
 
 /* Poster card */
 .love-poster{
-  background:#fff8b0;
-  border:4px solid #ff4d6d;
-  padding:50px 90px;
-  border-radius:20px;
-  font-size:3.2rem;
-  font-family:cursive;
-  color:#ff1e56;
-  text-align:center;
-  box-shadow:0 30px 60px rgba(0,0,0,0.35);
-  animation:posterEntry 1s ease, floatPoster 3s ease-in-out infinite;
-  position:relative;
-}
-
-/* 💖 Romantic Glow Aura */
-.love-poster{
   background:#fffcdb;
   border:4px solid #ffb704;
   padding:50px 90px;
@@ -467,17 +579,6 @@ animation:fall linear forwards;}
     0 0 25px #c95b6f,
     0 0 50px #ef899c,
     0 0 80px rgba(249, 120, 144, 0.6);
-}
-
-/* Soft outer aura */
-.love-poster::before{
-  content:"";
-  position:absolute;
-  inset:-20px;
-  border-radius:30px;
-  background:radial-gradient(circle, rgba(255,77,109,0.25), transparent 70%);
-  filter:blur(20px);
-  z-index:-1;
 }
 
 /* Glow breathing */
@@ -525,8 +626,23 @@ animation:fall linear forwards;}
   opacity:0;
   transform:translateY(30px);
 }
-
-/* One by one reveal */
+.glow-text {
+    animation: glow 1.5s ease-in-out infinite alternate;
+    color: #ff1e56;
+    font-family: cursive;
+    text-shadow: 
+      0 0 10px whitesmoke,
+      0 0 25px var(--red),
+      0 0 40px whitesmoke;
+}
+.glow-text2 {
+    animation: glow 1.5s ease-in-out infinite alternate;
+    color: white;
+    text-shadow: 
+      0 0 10px whitesmoke,
+      0 0 25px var(--red),
+      0 0 40px whitesmoke;
+}
 .l1{ animation:fadeLine .8s ease forwards; animation-delay:0.3s; }
 .l2{ animation:fadeLine .8s ease forwards; animation-delay:1.4s; }
 .l3{ animation:fadeLine .8s ease forwards; animation-delay:2.5s; }
@@ -537,6 +653,7 @@ animation:fall linear forwards;}
     transform:translateY(0);
   }
 }
+
 
 /* vanish animation */
 .apology-hide{
@@ -550,25 +667,17 @@ animation:fall linear forwards;}
   }
 }
 #finalSurprise{
-  position:absolute;
+  position:relative;
   inset:0;
   display:flex;
+  flex-direction: column; /* Stacks image then text then button */
   justify-content:center;
+  overflow-y: auto;
   align-items:center;
   flex-direction:column;
-  gap:1px;
   overflow:hidden; /* important */
 }
 
-/* BLUR BACKGROUND IMAGE */
-#finalSurprise::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:url('your-image.jpg') center/300px no-repeat; /* size same as before */
-  filter:blur(1.5px) brightness(0.7); /* 👈 blur + thoda dark */
-  z-index:0;
-}
 
 /* content upar dikhe */
 .apology-box,
@@ -576,6 +685,80 @@ animation:fall linear forwards;}
   position:relative;
   z-index:1;
 }
+/* Final surprise background (blur like Page 1) */
+#finalSurprise .final-bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+}
+
+#finalSurprise .final-bg img{
+  width:90%;
+  height:160vh;
+  justify-content: center;
+  object-fit:cover;
+  filter:blur(10px) brightness(0.95) opacity(0.8);
+  transform:scale(1.15);
+}
+
+/* Center main image */
+#finalSurprise .final-main{
+  position:absolute;
+  inset:0;
+  margin-bottom: 20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:0;
+}
+
+#finalSurprise .final-main img{
+  max-width:80%;
+  max-height:400px;
+  object-fit:contain;
+  border-radius:20px;
+  box-shadow:0 20px 45px rgba(245, 244, 244, 0.35);
+  transition:transform 0.5s ease;
+}
+
+/* optional gentle float effect */
+#finalSurprise .final-main img{
+  animation:floatPoster 3s ease-in-out infinite;
+}
+
+/* Apology text on top */
+#finalSurprise .apology-box,
+#finalSurprise button{
+  position:relative;
+  z-index:2;
+}
+
+/* --- CAROUSEL BUTTONS & DOTS --- */
+.media-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.carousel-btn { 
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    background: rgba(255,255,255,0.4); 
+    border: none; 
+    border-radius: 50%; 
+    width: 35px; 
+    height: 35px; 
+    cursor: pointer; 
+    z-index: 10; 
+    font-weight: bold;
+}
+#prevBtn { left: 5px; } #nextBtn { right: 5px; }
+.dots { position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 10; }
+.dot { width: 8px; height: 8px; background: rgba(0,0,0,0.2); border-radius: 50%; transition: background 0.3s; }
+.dot.active { background: var(--red); }
 
 </style>
 </head>
@@ -585,244 +768,227 @@ animation:fall linear forwards;}
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- PAGE 1 -->
-<div id="page1" class="page">
-  <div class="hero">
+<div id="page1">
+  <div class="insta-bg">
+    <img src="22.jpeg" alt="">
+  </div>
 
-    <div class="stack">
-      <div class="env e1"></div>
-      <div class="env e2"></div>
-      <div class="env e3"></div>
-      <div class="env e4"></div>
-      <button class="tap-btn overlay-btn" onclick="goToPage2()">Tap 💌</button>
+  <div class="hero page1-layout">
+    <div class="left-image">
+      <img src="22.jpeg" alt="">
     </div>
-
-    <h1 class="side-title"><b>Something from my heart… 🤍</b></h1>
-
+    <div class="right-content">
+      <h1 class="side-title"><b>Something from my heart… ❤️</b></h1>
+      <div class="stack">
+        <div class="env e1"></div>
+        <div class="env e2"></div>
+        <div class="env e3"></div>
+        <div class="env e4"></div>
+        <button class="tap-btn overlay-btn" onclick="goToPage2()">
+          💌 To, <br> Dumbu Pawar
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- PAGE 2 -->
 <div id="page2" class="page hidden">
   <div class="grid">
-  <div class="envelope" onclick="openMemory(2,this)">
-  <div class="flap"></div>
-  <span class="env-label">You Matter ✨
-</span>
-  <div class="paper"></div>
-</div>
-
-<div class="envelope" onclick="openMemory(3,this)">
-  <div class="flap"></div>
-  <span class="env-label">A Memory ✨</span>
-  <div class="paper"></div>
-</div>
-
-    <div class="envelope" onclick="openMemory(1,this)">
-  <div class="flap"></div>
-  <span class="env-label">Just You 🤍
-</span>
-  <div class="paper"></div>
-</div>
-
-
-
-
-
-<div class="envelope" onclick="openMemory(4,this)">
-  <div class="flap"></div>
-  <span class="env-label">Still you ❤️
-</span>
-  <div class="paper"></div>
-</div>
-
+    <div class="envelope" onclick="openMemory(2,this)"><div class="flap"></div><span class="env-label">You Matter ✨</span><div class="paper"></div></div>
+    <div class="envelope" onclick="openMemory(3,this)"><div class="flap"></div><span class="env-label">A Memory ✨</span><div class="paper"></div></div>
+    <div class="envelope" onclick="openMemory(1,this)"><div class="flap"></div><span class="env-label">Just You 🤍</span><div class="paper"></div></div>
+    <div class="envelope" onclick="openMemory(4,this)"><div class="flap"></div><span class="env-label">Still you ❤️</span><div class="paper"></div></div>
   </div>
 </div>
-<!-- FINAL SURPRISE -->
-<div id="finalSurprise" style="display:none; text-align:center; flex-direction:column; align-items:center;">
-  <div class="apology-box">
-  <p class="line l1"><b>I know you are not sure of us and so much has changed since last time we met. </b></p>
-  <p class="line l2"><b>I don't know if you will ever get a chance to read all of this because I am scared</b></p>
-  <p class="line l3"><b>what if this makes you hate me.</b></p>
-  <p class="line l3"><b>If at all this reaches you…</b></p>
-  <p class="line l3"><b>one last chance isthava. Please?</b></p>
-</div>
 
-  <button class="tap-btn" style="margin-top:20px; font-size:1.1rem;" onclick="forgiveAction()">Stay with me? ❤️
-</button>
-</div>
-<!-- I LOVE YOU POSTER -->
-<div id="lovePosterScreen" style="display:none;">
-  <div class="love-poster">
-    <b>I LOVE YOU ❤️</b>
-  </div>
-</div>
 <div id="memoryView">
   <div class="memory-paper">
-    <div class="paper-left">
-      <img id="memoryImg">
+    <img id="memoryBlurBg" src=""> <div class="paper-left">
+      <div class="media-container">
+        <img id="memoryImg" style="display:none;">
+        <video id="memoryVideo" style="display:none;" controls playsinline></video>
+        <button class="carousel-btn" id="prevBtn" onclick="changeMedia(-1)">❮</button>
+        <button class="carousel-btn" id="nextBtn" onclick="changeMedia(1)">❯</button>
+        <div class="dots" id="dots"></div>
+      </div>
     </div>
     <div class="paper-right">
-      <p id="memoryText"></p>
+      <div id="memoryText"></div>
+      
     </div>
-    <button class="back-btn" onclick="closeMemory()">Back</button>
+    
   </div>
+  <button class="back-btn" onclick="closeMemory()">Back</button>
+</div>
+
+<div id="finalSurprise" style="display:none; position:relative; inset:0; overflow:hidden; justify-content:center; align-items:center; flex-direction:column;">
+  
+  <div class="insta-bg">
+    <img src="your-image.jpg" alt="final background">
+  </div>
+
+  <div class="final-main"> 
+    <img src="your-image.jpg" alt="main memory image">
+  </div>
+
+  <div class="apology-box" style="width: 100%; padding-right: 5%; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-end;">
+  <div style="text-align: center; max-width: 80%;">
+    <p class="line l1 glow-text2" style="font-size: 1rem; margin: 5px 0;">
+      <b>I know you are not sure of us <br> so much has changed since last time we met.</b>
+    </p>
+    <p class="line l2 glow-text2" style="font-size: 1rem; margin: 5px 0;">
+      <b>I am scared because, I don't know if you will ever <br> get a chance to read all of this <br> what if this makes you hate me.</b>
+    </p>
+    <p class="line l3 glow-text2" style="font-size: 1rem; margin: 5px 0;">
+      <b>If at all this reaches you… <br> one last chance isthava, Please?</b>
+    </p>
+      <button class="tap-btn" style="margin-top:20px; font-size:1.1rem;" onclick="forgiveAction()">will you stay with me? ❤️</button>
+  </div>
+  </div>
+</div>
+
+</div>
+
+<div id="lovePosterScreen" style="display:none;">
+  <div class="love-poster"><b>I LOVE YOU ❤️</b></div>
 </div>
 
 <script>
-  let bgHeartInterval;
-let page2HeartInterval;
+let bgHeartInterval, page2HeartInterval, typingTimer = null, openedSet = new Set();
+let currentMediaIndex = 0, currentMediaList = [];
+const TYPING_SPEED = 20;
 
-  let openedCount = 0;
-let openedSet = new Set();
-
-  // typing timer for the typeWriter so we can cancel ongoing typing
-  let typingTimer = null;
-  // typing speed (ms) — increase to slow down typing
-  const TYPING_SPEED = 20;
-
-const memories={
-1:{img:"first.png",text:"It is YOU. It has always been YOU and It will be just YOU. I am a different person infront of different people. I express something infront of some and hide it from others and I try to act all strong. But it iss only infront you, I can be the all versions of me. I can behave the way I am with my friends, I can make fun of you like I do with my siblings, I can “alagadam”(english lo marchipoya) like I do infront of my parents, I enjoy your company like I am with my cousins and I can be a kid as you treat me and everyything. Not even once I tried to hide myself from what I was feeling. I felt the most secured when I am with you, I don’t even know how I slept on your shoulder in our college ground when I am can’t even sleep on a sofa. That is how much I trust you, how safe I feel when I am with you. I happily crossed all my boundaries only for you. Even in these 2 years, I tried to move on honestly but I don’t know, I couldn’t, then I realised I can’t. Okati adigav, asalu vere vallani pelli cheskogalava ani..enduku cheskovali, anyways the answer is NO, na valla kaadhu, the thought of not having you in my life is not letting me sleep, eat, concentrate or do anything. All I do everyday every minute from the past 5 months since you started ignoring me is think about you. Finally birthday ki matladinappudu, hammaya, na dumbu na daggare unnadu pakkane untadu le anukunnanu, anduke 1st night prashantham ga padukunna, nee call miss ayya, lekapothe everyday I check the volume, notifications anni hoping you would call me. I was not sure if I can stand against my family or hurt them, kani gradually things will change, they will definitely like you ani. Naa mundhu jaruguthunna every situation, manaki kuda pelli ayipothe ilane veltham kada, ilane chestham kada..everything is You."
+const memories = {
+    1:{img:"1.jpeg",text:"It is YOU. It has always been YOU and It will be just YOU. I am a different person infront of different people. I express something infront of some and hide it from others and I try to act all strong. But it iss only infront you, I can be the all versions of me. I can behave the way I am with my friends, I can make fun of you like I do with my siblings, I can “alagadam”(english lo marchipoya) like I do infront of my parents, I enjoy your company like I am with my cousins and I can be a kid as you treat me and everyything. Not even once I tried to hide myself from what I was feeling. I felt the most secured when I am with you, I don’t even know how I slept on your shoulder in our college ground when I am can’t even sleep on a sofa. That is how much I trust you, how safe I feel when I am with you. I happily crossed all my boundaries only for you. Even in these 2 years, I tried to move on honestly but I don’t know, I couldn’t, then I realised I can’t. Okati adigav, asalu vere vallani pelli cheskogalava ani..enduku cheskovali, anyways the answer is NO, na valla kaadhu, the thought of not having you in my life is not letting me sleep, eat, concentrate or do anything. All I do everyday every minute from the past 5 months since you started ignoring me is think about you. Finally birthday ki matladinappudu, hammaya, na dumbu na daggare unnadu pakkane untadu le anukunnanu, anduke 1st night prashantham ga padukunna, nee call miss ayya, lekapothe everyday I check the volume, notifications anni hoping you would call me. I was not sure if I can stand against my family or hurt them, kani gradually things will change, they will definitely like you ani. Naa mundhu jaruguthunna every situation, manaki kuda pelli ayipothe ilane veltham kada, ilane chestham kada..everything is You."
 },
-2:{img:"second.png",text:"Chandan, it's been 6 whole years since you entered into my life with a smile. I cannot thank you enough for all these years of love. Be it as a friend or my love, you’ve stayed with me all throughout. There were times we fought, we cried, we gave up on each other. But I never wanted to leave you. Even when I said break up, I was confused because I was staying at home and everything was new. All I wanted was for you to reassure me (you know I always create scenarios in my head) and give me strength to overcome them or a short break. But this created a gap of 1 and half years. Even during these times, I never stopped loving you, maybe the way I loved changed. Sometimes it was anger, why would you not ask me to come back, was I that easy to give up or was I not enough, what was all that happened between us, or did I not love you that much, was it suffocating, was it that difficult to realise I exist, do you not remember me, or did it not mean anything to you, sometimes it was that feeling where I even loved missing you, I felt happy that you exist and we happened and you will somehow find your way back just like you used to come to me after every fight (like I used to go home and you would come to the station to drop me) and randomly hug myself, sometimes it was fear, what if you not come back, what if I get married to someone else, what was all that happened, why did it happen if it was not meant to be. Through all this, I only realised how much you loved me. You stayed with patience throughout my anger and sorrow, you stood by me when I cried my heart out and never judged me. Me crying infront of you non-stop about my friends, parents and you is all very personal to me. You changed the way I think, I believe and I see things. I felt the safest around you, that I could even tell you something that I have been holding onto myself my entire life. I love how you treated me like a kid. I loved myself everytime I got excited to see you, hug you, talk to you, go out with you. I used to feel happy just looking at you. I wish I could express myself properly, I wish you could know everything that I felt when I was with you and everything I am feeling right now. I love you so much."
+2:{img:"3.jpeg",text:"Chandan, it's been 6 whole years since you entered into my life with a smile. I cannot thank you enough for all these years of love. Be it as a friend or my love, you’ve stayed with me all throughout. There were times we fought, we cried, we gave up on each other. But I never wanted to leave you. Even when I said break up, I was confused because I was staying at home and everything was new. All I wanted was for you to reassure me (you know I always create scenarios in my head) and give me strength to overcome them or a short break. But this created a gap of 1 and half years. Even during these times, I never stopped loving you, maybe the way I loved changed. Sometimes it was anger, why would you not ask me to come back, was I that easy to give up or was I not enough, what was all that happened between us, or did I not love you that much, was it suffocating, was it that difficult to realise I exist, do you not remember me, or did it not mean anything to you, sometimes it was that feeling where I even loved missing you, I felt happy that you exist and we happened and you will somehow find your way back just like you used to come to me after every fight (like I used to go home and you would come to the station to drop me) and randomly hug myself, sometimes it was fear, what if you not come back, what if I get married to someone else, what was all that happened, why did it happen if it was not meant to be. Through all this, I only realised how much you loved me. You stayed with patience throughout my anger and sorrow, you stood by me when I cried my heart out and never judged me. Me crying infront of you non-stop about my friends, parents and you is all very personal to me. You changed the way I think, I believe and I see things. I felt the safest around you, that I could even tell you something that I have been holding onto myself my entire life. I love how you treated me like a kid. I loved myself everytime I got excited to see you, hug you, talk to you, go out with you. I used to feel happy just looking at you. I wish I could express myself properly, I wish you could know everything that I felt when I was with you and everything I am feeling right now. I love you so much."
 },
-3:{img:"third.png",text:"Not just one but memories. You asked me if I still have the gifts that you gave me. I even have the tag of sweatshirt you first gifted me. The handwritten notes, the flower, the attitude dumbu, Bubble machine, sponge smiley keychain, black hoodie, phone case, camera, red cute doll, everyyythingggg. 1st time you took me on your bike to kovalam beach, 1st time you held my hand, the night I confessed how jealous I was, everything flashes in front my eyes just like it happened a little time ago, only to realise it has been 4 years. Beyond all these, the experiences that you gave me, the love that you showed, the care you showered, all the hugs and kisses, everything is still with me and will always be with me."
+3: { 
+        img: ["memory/a.jpeg", "memory/b.jpeg", "memory/c.jpeg","memory/d.jpeg","memory/e.jpeg","memory/f.jpeg","memory/g.jpeg","memory/h.jpeg","memory/i.jpeg","memory/j.jpeg","memory/k.jpeg","memory/l.jpeg","memory/m.jpeg","memory/n.jpeg","memory/o.jpeg","memory/p.mp4"], // Add your multiple images here
+        text: "Not just one but memories. You asked me if I still have the gifts that you gave me. I even have the tag of sweatshirt you first gifted me. The handwritten notes, the flower, the attitude dumbu, Bubble machine, sponge smiley keychain, black hoodie, phone case, camera, red cute doll, everyyythingggg. 1st time you took me on your bike to kovalam beach, 1st time you held my hand, the night I confessed how jealous I was, everything flashes in front my eyes just like it happened a little time ago, only to realise it has been 4 years. Beyond all these, the experiences that you gave me, the love that you showed, the care you showered, all the hugs and kisses, everything is still with me and will always be with me."
 },
-4:{img:"four.png",text:"Whatever it is, I am still waiting for you, hoping and praying for god to bring us back, to change your heart to love me again. I believe we did happen for a reason. Else, there’s no other reason that explains why I left everyone just to watch a stranger’s badminton match and why would a stranger hug me in front of everyone before his match, why would I spend entire night exploring a random unknown station with you, why would we stop talking and what made you to call me ask me to come down on march 5th, 2022. Even after a year gap, why would we still have the same bond and how did that lead us to a relationship? What is that assurance that made me wait for 2 whole years thinking yes, you are still there, and we will definitely get back. Chandan I know we will get back, but my heart still aches when I think of you, knowing that you are not beside me right now and I am the reason for that. Why did u nott fight back when I said I wanted to leave you, you promised me that you would stay beside me no matter what. I was tired of acting strong dumbu, was tired of waiting for your reply, tired of waiting to know you are safe and reached home. I did not want to loose you. Tarwata eppudu matladudham anukunna kuda, I thought maybe you forgot me and were happy leading your life without any restrictions I put before you. I thought I was disturbing you, maybe I was a distraction while you were preparing for cat and interviews. I know I loved you for who you are but I just wanted you to be careful and responsible. One thing..I never hated you playing badminton or cricket or doing photography. In fact I love to see you score runs, smash the cock and aa aggresiveness and people cheering for you. I used to feel soooo proud of my cutest dumbu. I just wanted you to manage them properly while giving me some time. Photography chesthunnappudu kuda chala baguntav. I love seeing you happy, your eyes glow differently when you take a picture that satisfies you. Nuv eyes tho matladadam ishtam. Cheppalante neeku malli padipoindhi kuda badminton match choose, inter iim matches lo. Avi choosi malli fix ayipoya wait cheyyadam valla ayye panila ledhu, maname rangam loki digali anii. I can love you whoooole life, ayina inka prema migilipothundhi antha ishtam nuvvante. Okasari pelli cheskuntava ani adagochu kada. Somewhat filmy but I even thought you would somehow convince my parents and surprise me by coming to our home and I would cry falling into your arms and hug you in front of my family."
-}
-};
+    4: { img: "4.jpeg", text: "Whatever it is, I am still waiting for you, hoping and praying for god to bring us back, to change your heart to love me again. I believe we did happen for a reason. Else, there’s no other reason that explains why I left everyone just to watch a stranger’s badminton match and why would a stranger hug me in front of everyone before his match, why would I spend entire night exploring a random unknown station with you, why would we stop talking and what made you to call me ask me to come down on march 5th, 2022. Even after a year gap, why would we still have the same bond and how did that lead us to a relationship? What is that assurance that made me wait for 2 whole years thinking yes, you are still there, and we will definitely get back. Chandan I know we will get back, but my heart still aches when I think of you, knowing that you are not beside me right now and I am the reason for that. Why did u nott fight back when I said I wanted to leave you, you promised me that you would stay beside me no matter what. I was tired of acting strong dumbu, was tired of waiting for your reply, tired of waiting to know you are safe and reached home. I did not want to loose you. Tarwata eppudu matladudham anukunna kuda, I thought maybe you forgot me and were happy leading your life without any restrictions I put before you. I thought I was disturbing you, maybe I was a distraction while you were preparing for cat and interviews. I know I loved you for who you are but I just wanted you to be careful and responsible. One thing..I never hated you playing badminton or cricket or doing photography. In fact I love to see you score runs, smash the cock and aa aggresiveness and people cheering for you. I used to feel soooo proud of my cutest dumbu. I just wanted you to manage them properly while giving me some time. Photography chesthunnappudu kuda chala baguntav. I love seeing you happy, your eyes glow differently when you take a picture that satisfies you. Nuv eyes tho matladadam ishtam. Cheppalante neeku malli padipoindhi kuda badminton match choose, inter iim matches lo. Avi choosi malli fix ayipoya wait cheyyadam valla ayye panila ledhu, maname rangam loki digali anii. I can love you whoooole life, ayina inka prema migilipothundhi antha ishtam nuvvante. Okasari pelli cheskuntava ani adagochu kada. Somewhat filmy but I even thought you would somehow convince my parents and surprise me by coming to our home and I would cry falling into your arms and hug you in front of my family."
+}};
 
-let heartInterval;
 function goToPage2(){
   document.getElementById("bgMusic").play();
-
   stopBGHearts();
   page1.classList.add("hidden");
   page2.classList.remove("hidden");
   page2.classList.add("show");
   startPage2Hearts();
-
-  // envelopes ko select karo
   const envs = document.querySelectorAll(".envelope");
-
-  envs[0].classList.add("fly1");
-  envs[1].classList.add("fly2");
-  envs[2].classList.add("fly3");
-  envs[3].classList.add("fly4");
+  envs.forEach((e,i)=> e.classList.add(`fly${i+1}`));
 }
 
-window.onload = () => {
-  startBGHearts();
-};
+window.onload = () => { startBGHearts(); };
 
 function openMemory(num, el){
-  if(openedSet.has(num)) return; // repeat count na ho
+  if (typingTimer) clearTimeout(typingTimer);
+  memoryText.innerHTML = "";
   openedSet.add(num);
-  openedCount++;
 
   el.classList.add("open");
+  
   setTimeout(()=>{
-  el.classList.add("fade");
-  // animation ke baad element hata do
-  setTimeout(()=>{
-    el.style.display = "none";
-  },600);
+    memoryView.style.display="flex";
+    const mem = memories[num];
+    currentMediaList = Array.isArray(mem.img) ? mem.img : [mem.img];
+    currentMediaIndex = 0;
+    
+    updateMediaDisplay();
+    
+    const isCarousel = currentMediaList.length > 1;
+    document.getElementById('prevBtn').style.display = isCarousel ? 'block' : 'none';
+    document.getElementById('nextBtn').style.display = isCarousel ? 'block' : 'none';
+    document.getElementById('dots').style.display = isCarousel ? 'flex' : 'none';
 
-},900);
-  setTimeout(()=>{
-  memoryView.style.display="flex";
-  memoryView.style.backgroundImage="none"; // background image hata diya
-  memoryImg.src = memories[num].img; // image left side
-  // ensure scroll is at top so initial text is visible
-  const right = document.querySelector('.paper-right');
-  if(right) right.scrollTop = 0;
-  typeWriter(memories[num].text);    // typing effect text
-  startHearts();
-},1200);
+    document.querySelector('.paper-right').scrollTop = 0;
+    typeWriter(mem.text);
+    startHearts();
+  }, 1200);
 }
-function startBGHearts(){
-  bgHeartInterval = setInterval(()=>{
-    const h = document.createElement("div");
-    h.className = "bg-heart";
-    h.innerHTML = "💖";
-    h.style.left = Math.random()*100 + "vw";
-    h.style.animationDuration = (Math.random()*4+3) + "s";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),7000);
-  },100);
+
+function updateMediaDisplay() {
+  const path = currentMediaList[currentMediaIndex];
+  const imgTag = document.getElementById("memoryImg");
+  const videoTag = document.getElementById("memoryVideo");
+  const blurTag = document.getElementById("memoryBlurBg");
+  
+  videoTag.pause();
+  
+  // Update Full Card Blur (Use current image or first image if video)
+  const blurPath = path.toLowerCase().endsWith('.mp4') ? currentMediaList[0] : path;
+  blurTag.src = blurPath;
+
+  if (path.toLowerCase().endsWith('.mp4')) {
+    imgTag.style.display = "none";
+    videoTag.style.display = "block";
+    videoTag.src = path;
+  } else {
+    videoTag.style.display = "none";
+    imgTag.style.display = "block";
+    imgTag.src = path;
+  }
+  
+  const dotsCont = document.getElementById('dots');
+  dotsCont.innerHTML = '';
+  currentMediaList.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = `dot ${i === currentMediaIndex ? 'active' : ''}`;
+    dotsCont.appendChild(dot);
+  });
 }
-function startPage2Hearts(){
-  page2HeartInterval=setInterval(()=>{
-    const h=document.createElement("div");
-    h.className="bg-heart2";
-    h.innerHTML="💗";
-    h.style.left=Math.random()*100+"vw";
-    h.style.animationDuration=(Math.random()*3+3)+"s";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),6000);
-  },400);
+
+function changeMedia(step) {
+  currentMediaIndex = (currentMediaIndex + step + currentMediaList.length) % currentMediaList.length;
+  updateMediaDisplay();
 }
-function stopPage2Hearts(){
-  clearInterval(page2HeartInterval);
-  document.querySelectorAll(".bg-heart2").forEach(h=>h.remove());
-}
-function stopBGHearts(){
-  clearInterval(bgHeartInterval);
-  document.querySelectorAll(".bg-heart").forEach(h=>h.remove());
-}
+
 function closeMemory(){
+  document.getElementById("memoryVideo").pause();
   memoryView.style.display="none";
   stopHearts();
-  // stop any ongoing typing to avoid interleaved/gibberish text
-  if(typingTimer) clearTimeout(typingTimer);
-  if(openedCount === 4){
-    showFinalSurprise();
-  }
-}
-function startHearts(){
-  heartInterval=setInterval(()=>{
-    const h=document.createElement("div");
-    h.className="heart";h.innerHTML="❤️";
-    h.style.left=Math.random()*100+"vw";
-    h.style.animationDuration=(Math.random()*3+2)+"s";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),5000);
-  },300);
-}
-function stopHearts(){
-  clearInterval(heartInterval);
-  document.querySelectorAll(".heart").forEach(h=>h.remove());
-}
-function showFinalSurprise(){
-  document.querySelector(".grid").style.display="none";
-  finalSurprise.style.display="flex";
-}
-function forgiveAction(){
-  document.querySelector(".apology-box").classList.add("apology-hide");
-  setTimeout(()=>{
-    document.getElementById("finalSurprise").style.display="none";
-    document.getElementById("lovePosterScreen").style.display="flex";
-  },600);
-}
-function typeWriter(text){
-  // cancel any previous typing in progress
   if(typingTimer) clearTimeout(typingTimer);
   memoryText.innerHTML = "";
-  // ensure scroll at top while typing
-  const right = document.querySelector('.paper-right');
-  if(right) right.scrollTop = 0;
+  if(openedSet.size === 4) showFinalSurprise();
+}
+
+function typeWriter(text){
+  if(typingTimer) clearTimeout(typingTimer);
+  memoryText.innerHTML = "";
   let i = 0;
-  const speed = TYPING_SPEED; // typing speed (ms)
   function type(){
     if(i < text.length){
       memoryText.innerHTML += text.charAt(i);
       i++;
-      typingTimer = setTimeout(type, speed);
+      typingTimer = setTimeout(type, TYPING_SPEED);
     }
   }
   type();
 }
+
+function startBGHearts(){ bgHeartInterval = setInterval(()=>{ createHeart("bg-heart", "💖", 7000); }, 100); }
+function startPage2Hearts(){ page2HeartInterval = setInterval(()=>{ createHeart("bg-heart2", "💗", 6000); }, 400); }
+function startHearts(){ heartInterval = setInterval(()=>{ createHeart("heart", "❤️", 5000); }, 300); }
+function createHeart(cls, char, dur) {
+  const h = document.createElement("div");
+  h.className = cls; h.innerHTML = char;
+  h.style.left = Math.random()*100 + "vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(), dur);
+}
+function stopBGHearts(){ clearInterval(bgHeartInterval); document.querySelectorAll(".bg-heart").forEach(h=>h.remove()); }
+function stopPage2Hearts(){ clearInterval(page2HeartInterval); document.querySelectorAll(".bg-heart2").forEach(h=>h.remove()); }
+function stopHearts(){ clearInterval(heartInterval); document.querySelectorAll(".heart").forEach(h=>h.remove()); }
+function showFinalSurprise(){ document.querySelector(".grid").style.display="none"; finalSurprise.style.display="flex"; }
+function forgiveAction(){ 
+    document.querySelector(".apology-box").classList.add("apology-hide");
+    setTimeout(()=>{
+        document.getElementById("finalSurprise").style.display="none";
+        document.getElementById("lovePosterScreen").style.display="flex";
+    },600);
+}
 </script>
 </body>
 </html>
-
