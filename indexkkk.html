@@ -237,11 +237,11 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow-x:
     <div class="insta-bg"><img src="your-image.jpg"></div>
     <div class="final-main"><img src="your-image.jpg"></div>
     <div class="apology-box" id="apologyBox">
-        <p class="glow-text">I know things have changed...</p>
-        <p class="glow-text">I don't know if you'll read this because I'm scared.</p>
-        <p class="glow-text">One last chance isthava? Please?</p>
+        <p class="glow-text">>I know you are not sure of us and so much has changed since last time we met.</p>
+        <p class="glow-text">I am scared because, I don't know if you will ever get a chance to read all of this and what if this makes you hate me.</p>
+        <p class="glow-text">If at all this reaches you…  one last chance isthava, Please?</p>
     </div>
-    <button class="tap-btn" style="margin-top:20px" onclick="forgiveAction()">Stay with me? ❤️</button>
+    <button class="tap-btn" style="margin-top:20px" onclick="forgiveAction()">Will you stay with me? ❤️</button>
 </div>
 
 <div id="lovePosterScreen" class="page hidden" style="background:radial-gradient(circle,#ffe3e8,#ffb3c1);">
@@ -373,7 +373,7 @@ function closeMemory() {
 
 function typeWriter(text) {
     const el = document.getElementById("memoryText");
-    // Extra safety: clear before starting
+    const container = document.querySelector('.paper-content'); // The scrollable box
     el.innerHTML = "";
     let i = 0;
     
@@ -381,7 +381,11 @@ function typeWriter(text) {
         if (i < text.length) {
             el.innerHTML += text.charAt(i);
             i++;
+            
+            // AUTO-SCROLL LOGIC:
+            // Keeps the scroll position at the bottom as new lines appear
             container.scrollTop = container.scrollHeight;
+            
             typingTimer = setTimeout(type, 30);
         }
     }
