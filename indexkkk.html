@@ -42,23 +42,37 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow-x:
 .fade { opacity: 0; transform: scale(0.5); transition: 0.6s; }
 
 /* --- SPOTIFY/INSTA STYLE MEMORY CARD --- */
-#memoryView { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 100; padding: 15px; }
+
+/* --- SPOTIFY/INSTA STYLE MEMORY CARD --- */
+#memoryView { 
+    position: fixed; 
+    inset: 0; 
+    background: rgba(0,0,0,0.9); 
+    display: none; 
+    align-items: center; 
+    justify-content: center; 
+    z-index: 100; 
+    padding: 15px; 
+}
+
 .memory-paper { 
     background: #fff8b0; 
     width: 90%; 
-    max-height: 85vh; 
+    height: 80vh; /* Set a fixed height for the whole card */
+    max-height: 600px; /* Optional cap for very tall phones */
     border-radius: 20px; 
     display: flex; 
     flex-direction: column; 
     overflow: hidden; 
-    animation: paperPop 0.5s ease;
+    animation: paperPop 0.5s ease; 
     box-shadow: 0 30px 60px rgba(0,0,0,0.45);
 }
 
 .paper-top { 
     position: relative;
     width: 100%; 
-    height: 250px; 
+    height: 250px; /* FIXED HEIGHT: The picture container will never shrink */
+    flex-shrink: 0; /* Ensures the picture doesn't get squeezed by text */
     overflow: hidden;
     background: #000;
 }
@@ -85,7 +99,7 @@ body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);overflow-x:
 
 #memoryImg, #memoryVideo { 
     max-width: 100%; 
-    max-height: 100%; 
+    height: 100%; /* Fill the fixed container height */
     object-fit: contain; 
     filter: drop-shadow(0 20px 45px rgba(0,0,0,0.55));
 }
@@ -367,6 +381,7 @@ function typeWriter(text) {
         if (i < text.length) {
             el.innerHTML += text.charAt(i);
             i++;
+            container.scrollTop = container.scrollHeight;
             typingTimer = setTimeout(type, 30);
         }
     }
