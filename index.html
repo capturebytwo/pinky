@@ -1,3 +1,9 @@
+<script type="text/javascript">
+  // Check screen width or user agent
+  if (window.innerWidth >= 768 ) {
+    window.location.href = "indexkk.html";
+  }
+</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -248,8 +254,7 @@ const memories = {
 },
     4: { img: "4.jpeg", text: "Whatever it is, I am still waiting for you, hoping and praying for god to bring us back, to change your heart to love me again. I believe we did happen for a reason. Else, there’s no other reason that explains why I left everyone just to watch a stranger’s badminton match and why would a stranger hug me in front of everyone before his match, why would I spend entire night exploring a random unknown station with you, why would we stop talking and what made you to call me ask me to come down on march 5th, 2022. Even after a year gap, why would we still have the same bond and how did that lead us to a relationship? What is that assurance that made me wait for 2 whole years thinking yes, you are still there, and we will definitely get back. Chandan I know we will get back, but my heart still aches when I think of you, knowing that you are not beside me right now and I am the reason for that. Why did u nott fight back when I said I wanted to leave you, you promised me that you would stay beside me no matter what. I was tired of acting strong dumbu, was tired of waiting for your reply, tired of waiting to know you are safe and reached home. I did not want to loose you. Tarwata eppudu matladudham anukunna kuda, I thought maybe you forgot me and were happy leading your life without any restrictions I put before you. I thought I was disturbing you, maybe I was a distraction while you were preparing for cat and interviews. I know I loved you for who you are but I just wanted you to be careful and responsible. One thing..I never hated you playing badminton or cricket or doing photography. In fact I love to see you score runs, smash the cock and aa aggresiveness and people cheering for you. I used to feel soooo proud of my cutest dumbu. I just wanted you to manage them properly while giving me some time. Photography chesthunnappudu kuda chala baguntav. I love seeing you happy, your eyes glow differently when you take a picture that satisfies you. Nuv eyes tho matladadam ishtam. Cheppalante neeku malli padipoindhi kuda badminton match choose, inter iim matches lo. Avi choosi malli fix ayipoya wait cheyyadam valla ayye panila ledhu, maname rangam loki digali anii. I can love you whoooole life, ayina inka prema migilipothundhi antha ishtam nuvvante. Okasari pelli cheskuntava ani adagochu kada. Somewhat filmy but I even thought you would somehow convince my parents and surprise me by coming to our home and I would cry falling into your arms and hug you in front of my family."
 }};
-
-let openedCount = 0;
+let openedSet = new Set(); // Using a Set to track unique opens
 let typingTimer = null;
 let currentImgIndex = 0;
 let currentMemoryImages = [];
@@ -262,6 +267,10 @@ function goToPage2() {
 }
 
 function openMemory(num, el) {
+    // 1. Clear any existing typing immediately on click
+    if(typingTimer) clearTimeout(typingTimer);
+    document.getElementById("memoryText").innerHTML = "";
+
     el.classList.add("open");
     setTimeout(() => {
         el.classList.add("fade");
@@ -275,9 +284,15 @@ function openMemory(num, el) {
             displayMedia(currentMemoryImages[0]);
 
             document.getElementById("memoryView").style.display = "flex";
-            document.querySelector('.paper-content').scrollTop = 0;
+            
+            // Ensure scroll is reset to top
+            const contentArea = document.querySelector('.paper-content');
+            contentArea.scrollTop = 0;
+            
+            // Track this unique envelope
+            openedSet.add(num); 
+            
             typeWriter(mem.text);
-            openedCount++;
         }, 600);
     }, 1000);
 }
@@ -327,10 +342,18 @@ function updateDots() {
 }
 
 function closeMemory() {
+    // 1. Stop video if playing
     document.getElementById("memoryVideo").pause();
-    document.getElementById("memoryView").style.display = "none";
+    
+    // 2. Clear typing timer and text content immediately
     if(typingTimer) clearTimeout(typingTimer);
-    if(openedCount === 4) {
+    document.getElementById("memoryText").innerHTML = "";
+    
+    // 3. Hide the view
+    document.getElementById("memoryView").style.display = "none";
+    
+    // 4. Only navigate if the Set has all 4 unique IDs
+    if(openedSet.size === 4) {
         document.getElementById("page2").classList.add("hidden");
         document.getElementById("finalSurprise").style.display = "flex";
         setTimeout(() => {
@@ -342,8 +365,10 @@ function closeMemory() {
 
 function typeWriter(text) {
     const el = document.getElementById("memoryText");
+    // Extra safety: clear before starting
     el.innerHTML = "";
     let i = 0;
+    
     function type() {
         if (i < text.length) {
             el.innerHTML += text.charAt(i);
@@ -353,7 +378,6 @@ function typeWriter(text) {
     }
     type();
 }
-
 function startHearts() {
     setInterval(() => {
         const h = document.createElement("div");
